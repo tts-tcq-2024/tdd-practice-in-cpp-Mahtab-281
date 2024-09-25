@@ -72,7 +72,7 @@ std::string StringCalculator::Process_String_for_delimiters(std::string input)
 int StringCalculator::exception_handling_for_whitespce(std::string token)
 {
     if (!token.empty()) 
-    {  
+    {  // Check if the token is not empty
         check_for_alphabet_error(token);  
         int num = std::stoi(token);  // Convert to integer
         return num;
