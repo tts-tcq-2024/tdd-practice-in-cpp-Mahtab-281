@@ -14,4 +14,4 @@ class StringCalculator
     int exception_handling_for_whitespce(std::string token);
     int add(std::string input);
 };
-#endif // StringCalculator_H
+#endif
