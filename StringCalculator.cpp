@@ -6,24 +6,14 @@
 #include <vector>
 #include <stdexcept>
 #include <string>
-
+ 
 std::vector<int> negatives;
 int flag = 0;
-
-class Exception : public std::runtime_error {
+class NegativeNumberException : public std::runtime_error {
 public:
-    Exception(const std::string& message)
+    NegativeNumberException(const std::string& message)
         : std::runtime_error(message) {}
 };
-void check_for_alphabet_error(std::string token)
-{
-    for(char ch : token)
-        if(isalpha(ch))
-        {
-            std::string message = "Alphabets not allowed: ";
-            throw Exception(message);
-        }
-}
 void throw_error()
 {
         std::string message = "Negatives not allowed: ";
@@ -35,9 +25,9 @@ void throw_error()
                     message += ", ";
                 }
             }
-        throw Exception(message);
+        throw NegativeNumberException(message);
 }
-int StringCalculator::check_for_less_than_thousand(int num)
+int StringCalculator::less_than_thousand(int num)
     {
        if (num>=1000)
          return 0;
@@ -48,7 +38,7 @@ int StringCalculator::get_positive_number(int num)
 {
     int digit = 0;
     if(num>=0)
-        digit = check_for_less_than_thousand(num);
+        digit = less_than_thousand(num);
     else
     {
         negatives.push_back(num);
@@ -56,8 +46,8 @@ int StringCalculator::get_positive_number(int num)
     }
     return digit;
 }
-
-std::string StringCalculator::Process_String_for_delimiters(std::string input)
+ 
+std::string StringCalculator::processed_String_for_delimiters(std::string input)
 {
       if (input.substr(0, 2) == "//") 
      {
@@ -68,21 +58,22 @@ std::string StringCalculator::Process_String_for_delimiters(std::string input)
       std::replace(input.begin(), input.end(), '\n', ',');
     return input;
 }
-
+ 
 int StringCalculator::exception_handling_for_whitespce(std::string token)
 {
     if (!token.empty()) 
     {  // Check if the token is not empty
-        check_for_alphabet_error(token);  
         int num = std::stoi(token);  // Convert to integer
         return num;
     } 
-    return 0;
+    else 
+    {
+        return 0;
+    }
 }
-    
 int StringCalculator::add(std::string input)
    { 
-      std::string processed_input = Process_String_for_delimiters(input);
+      std::string processed_input = processed_String_for_delimiters(input);
       int sum = 0;
       std::stringstream ss(processed_input);
       std::string token;  
@@ -91,7 +82,7 @@ int StringCalculator::add(std::string input)
           int num = exception_handling_for_whitespce(token);
           int addition = get_positive_number(num);
           sum += addition;
-      }
+    }
        if(flag>0)
           throw_error();
       return sum;
